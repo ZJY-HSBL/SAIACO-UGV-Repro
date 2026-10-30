@@ -1,0 +1,27 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "saiaco-ugv-repro"
+version = "0.1.0"
+description = "Reproduction of simulated annealing-improved ant colony optimization for UGV path planning"
+readme = "README.md"
+requires-python = ">=3.10"
+license = {text="MIT"}
+dependencies = ["matplotlib>=3.7,<4"]
+
+[project.optional-dependencies]
+test = ["pytest>=7.4,<10"]
+
+[project.scripts]
+saiaco-repro = "saiaco_ugv.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+
+[tool.setuptools.package-data]
+saiaco_ugv = ["maps/*.txt"]
