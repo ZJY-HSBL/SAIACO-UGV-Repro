@@ -1,0 +1,4 @@
+map,algorithm,length,turns,smoothness,first_best_iteration,successful_walks
+paper20,classic,35.0,19,16.0,36,1733
+paper20,improved,35.0,8,13.0,3,1789
+paper20,hybrid,28.468971,5,5.996858,3,1785
