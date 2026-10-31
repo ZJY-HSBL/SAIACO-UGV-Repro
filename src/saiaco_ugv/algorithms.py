@@ -40,6 +40,7 @@ class Config:
     recover_deadends: bool = True
     sa_enabled: bool = True  # Greedy-acceptance ablation switch
     smoothing_enabled: bool = True  # Disable final smoothing for ablation
+    elite_deposit_weight: float = 0.0  # Non-paper SA-selected elite pheromone extension
 
     def __post_init__(self) -> None:
         if self.ants < 1 or self.iterations < 1 or self.c <= 0 or self.init_temp <= 0 or self.elite_deposit_weight < 0:
