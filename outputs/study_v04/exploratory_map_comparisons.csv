@@ -1,0 +1,17 @@
+map,group,candidate,reference,n,mean_length_reduction,ci95_low,ci95_high,wins,losses,ties,unadjusted_sign_p
+paper20,main,elite_sa,elite_greedy,20,0.20117,-0.41603,0.76224,7,3,10,0.34375
+paper20,main,elite_sa,paper_inspired,20,0.17027,-0.62301,0.94577,11,8,1,0.6476059
+paper30,main,elite_sa,elite_greedy,20,0.01098,-0.01161,0.03519,3,2,15,1.0
+paper30,main,elite_sa,paper_inspired,20,0.36111,-0.16107,1.02179,7,6,7,1.0
+u_maze,special,elite_sa,elite_greedy,20,0.0,0.0,0.0,0,0,20,1.0
+u_maze,special,elite_sa,paper_inspired,20,0.0,0.0,0.0,0,0,20,1.0
+double_hook_maze,special,elite_sa,elite_greedy,20,0.0,0.0,0.0,0,0,20,1.0
+double_hook_maze,special,elite_sa,paper_inspired,20,0.0,0.0,0.0,0,0,20,1.0
+loop_maze,special,elite_sa,elite_greedy,20,0.0,0.0,0.0,0,0,20,1.0
+loop_maze,special,elite_sa,paper_inspired,20,0.0,0.0,0.0,0,0,20,1.0
+traditional_maze,special,elite_sa,elite_greedy,20,0.0,-0.285,0.285,1,1,18,1.0
+traditional_maze,special,elite_sa,paper_inspired,20,0.285,-0.19,0.76,5,2,13,0.453125
+staircase_maze,special,elite_sa,elite_greedy,20,-0.07663,-0.30366,0.1045,1,2,17,1.0
+staircase_maze,special,elite_sa,paper_inspired,20,1.21729,0.75983,1.66137,15,2,3,0.00234985
+x_maze,special,elite_sa,elite_greedy,20,0.0,0.0,0.0,0,0,20,1.0
+x_maze,special,elite_sa,paper_inspired,20,0.0,0.0,0.0,0,0,20,1.0

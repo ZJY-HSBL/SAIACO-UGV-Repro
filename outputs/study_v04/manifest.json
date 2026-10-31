@@ -1,0 +1,176 @@
+{
+  "version": "v0.4.0",
+  "study": "held-out 8-map SA feedback validation",
+  "config": {
+    "seed_start": 2000,
+    "seeds": 20,
+    "ants": 10,
+    "iterations": 15,
+    "bootstrap": 4000,
+    "out": "outputs/study_v04"
+  },
+  "conditions": [
+    "paper_inspired",
+    "elite_greedy",
+    "elite_sa"
+  ],
+  "primary_hypotheses": [
+    [
+      "elite_sa",
+      "elite_greedy"
+    ],
+    [
+      "elite_sa",
+      "paper_inspired"
+    ]
+  ],
+  "elite_weight": 3.0,
+  "map_source": "approximate figure digitization; original grids not available",
+  "analysis_unit": "seed (8-map relative percentage gain average), n=20",
+  "map_provenance": {
+    "paper20": {
+      "sha256": "36cc01126750d937935ca607da685e1936c3afe8f4d88b56da6542cedbef1980",
+      "shape": [
+        20,
+        20
+      ],
+      "obstacles": 154,
+      "start": [
+        3,
+        0
+      ],
+      "goal": [
+        19,
+        19
+      ],
+      "discrete_shortest": 28.556349,
+      "endpoint_provenance": "reconstructed; special map endpoints are assumed"
+    },
+    "paper30": {
+      "sha256": "655f39b8e9ff027f619d430d94871272a4ed2f13a739603016bab36d51aa062f",
+      "shape": [
+        30,
+        30
+      ],
+      "obstacles": 190,
+      "start": [
+        29,
+        0
+      ],
+      "goal": [
+        0,
+        29
+      ],
+      "discrete_shortest": 48.041631,
+      "endpoint_provenance": "reconstructed; special map endpoints are assumed"
+    },
+    "u_maze": {
+      "sha256": "a484ccc17583a60ac585b2dc2d78515629be2dabbb6ef0c8aec71d3fb5144787",
+      "shape": [
+        30,
+        30
+      ],
+      "obstacles": 88,
+      "start": [
+        29,
+        0
+      ],
+      "goal": [
+        0,
+        29
+      ],
+      "discrete_shortest": 51.556349,
+      "endpoint_provenance": "reconstructed; special map endpoints are assumed"
+    },
+    "double_hook_maze": {
+      "sha256": "aa38061bb87831ee63f03131d2e7d9df2635f078aef0bc58bbf3d134e124a35d",
+      "shape": [
+        30,
+        30
+      ],
+      "obstacles": 101,
+      "start": [
+        29,
+        0
+      ],
+      "goal": [
+        0,
+        29
+      ],
+      "discrete_shortest": 51.355339,
+      "endpoint_provenance": "reconstructed; special map endpoints are assumed"
+    },
+    "loop_maze": {
+      "sha256": "ed4aa09284fe07614b8a90dbd614bf158bcc7dcc1255884205e31712518bf26a",
+      "shape": [
+        30,
+        30
+      ],
+      "obstacles": 189,
+      "start": [
+        29,
+        0
+      ],
+      "goal": [
+        0,
+        29
+      ],
+      "discrete_shortest": 55.071068,
+      "endpoint_provenance": "reconstructed; special map endpoints are assumed"
+    },
+    "traditional_maze": {
+      "sha256": "304c91036ad4acaf9788a7d04ab1a80de76d0c5ebb4acb40c1bb62726427c60a",
+      "shape": [
+        30,
+        30
+      ],
+      "obstacles": 234,
+      "start": [
+        29,
+        0
+      ],
+      "goal": [
+        0,
+        29
+      ],
+      "discrete_shortest": 54.485281,
+      "endpoint_provenance": "reconstructed; special map endpoints are assumed"
+    },
+    "staircase_maze": {
+      "sha256": "21188d3019afd492cd482bf5e3e841b78aa8f06ec906e3db7f1ee0b1cca68b54",
+      "shape": [
+        30,
+        30
+      ],
+      "obstacles": 174,
+      "start": [
+        29,
+        0
+      ],
+      "goal": [
+        0,
+        29
+      ],
+      "discrete_shortest": 52.727922,
+      "endpoint_provenance": "reconstructed; special map endpoints are assumed"
+    },
+    "x_maze": {
+      "sha256": "6025b8571431253379bc9b0e93f011a2f05c395a205f16b1286f83e9e491f37f",
+      "shape": [
+        30,
+        30
+      ],
+      "obstacles": 38,
+      "start": [
+        29,
+        0
+      ],
+      "goal": [
+        0,
+        29
+      ],
+      "discrete_shortest": 50.970563,
+      "endpoint_provenance": "reconstructed; special map endpoints are assumed"
+    }
+  }
+}

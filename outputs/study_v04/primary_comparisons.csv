@@ -1,0 +1,3 @@
+candidate,reference,unit,n_seeds,mean_relative_gain_percent,ci95_low,ci95_high,wins,losses,ties,raw_sign_p,holm_sign_p,reject_0_05
+elite_sa,elite_greedy,paired seed (8-map mean),20,0.06484,-0.15149,0.291,9,4,7,0.2668457,0.53369141,False
+elite_sa,paper_inspired,paired seed (8-map mean),20,0.47866,-0.00254,0.95946,12,8,0,0.50344467,0.53369141,False
