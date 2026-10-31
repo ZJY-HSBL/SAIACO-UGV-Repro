@@ -1,5 +1,16 @@
 # Changelog
 
+## [v0.3.0] — 2026-10-31
+
+- Separated the ant-choice and Metropolis RNG streams to remove paired-ablation confounding; 20 tests.
+- Identified absent SA-to-pheromone feedback in the original paper-inspired implementation.
+- Added optional **non-paper** elite-deposit reinforcement with `elite_deposit_weight=3.0` for exploratory comparison.
+- Executed 360 paired trials: two reconstructed maps × 30 seeds × six configurations; retained data, uncertainty intervals, figure plots, and map SHA-256 hashes.
+- Main result: SA enabled/disabled are identical without pheromone feedback; smoothing supplies the dominant length reduction.
+- Numerical match to the source paper remains unresolved.
+
+# Changelog
+
 ## [v0.2.0] — 2026-10-31
 
 - Corrected direction-change turn counting for unequal collinear segments.

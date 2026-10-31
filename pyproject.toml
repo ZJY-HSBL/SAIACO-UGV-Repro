@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "saiaco-ugv-repro"
-version = "0.1.0"
+version = "0.3.0"
 description = "Reproduction of simulated annealing-improved ant colony optimization for UGV path planning"
 readme = "README.md"
 requires-python = ">=3.10"

@@ -157,3 +157,38 @@ docs/map_provenance.md # Source/parameter uncertainty
 - Keep original paper metrics separate from independent empirical results.
 
 **License:** MIT applies to independently written code only; copyright in the original paper and figures belongs to their respective owners.
+
+
+## 7. v0.3.0: paired multi-seed RNG audit / 配对随机种子审计
+
+**Study design:** 30 independent paired seeds 1000–1029 per configuration and map; 10 ants, 15 iterations, two figure-digitized maps (360 runs total). Full input and seed-level logs: [`outputs/study_v03/`](outputs/study_v03/). This is a new experimental configuration: **do not directly compare the means with v0.2.0**.
+
+| Condition / 配置 | 20×20 mean length | 30×30 mean length |
+|---|---:|---:|
+| Full paper-inspired SA-IACO | **28.2672** | **48.6607** |
+| No SA / 关闭退火 | 28.2672 | 48.6607 |
+| No direction guidance / 无方向引导 | 27.5192 | 48.3951 |
+| No smoothing / 无后处理平滑 | 35.2162 | 57.7752 |
+| Elite SA reinforcement **(non-paper extension)** | 27.7354 | 48.5171 |
+| Elite reinforcement without SA **(non-paper extension)** | 28.1377 | 48.6554 |
+
+![Mean path length with bootstrap uncertainty](outputs/study_v03/mean_length_ci.png)
+
+![Paired effect confidence intervals](outputs/study_v03/paired_effects.png)
+
+![Search and smoothing length decomposition](outputs/study_v03/gain_decomposition.png)
+
+**Most important finding:** once the ant and Metropolis random streams are separated, enabling/disabling the original SA decision produces **exactly identical paths in all 60 paired map–seed combinations**. The original implementation updates pheromone from all ant paths, while the SA-selected state is not fed back to ant transitions; therefore the observed v0.2.0 SA ablation differences were random-stream confounding, not evidence of SA improvement.
+
+**Direction guidance:** without direction weighting, the average 20×20 path is 0.7480 shorter than the full variant (paired 95% bootstrap interval of “full minus no-direction”: −1.2699 to −0.3239 grid units, unadjusted sign-test p=0.00661). These are exploratory comparisons across multiple hypotheses; no family-wise multiplicity adjustment is claimed. The 30×30 effect remains uncertain.
+
+**Smoothing:** average additional length reductions are 6.9490 and 9.1144 on 20×20 and 30×30 respectively. The fact that this dominates the pipeline **does not demonstrate SA search efficiency**.
+
+**Non-paper extension:** `elite_deposit_weight=3.0` allows the accepted SA state to reinforce pheromone and affect subsequent ant trajectories. Compared with elite reinforcement without SA, the mean length reductions are +0.4023 (20×20; paired bootstrap CI [+0.0610,+0.7507]) and +0.1383 (30×30; CI [−0.0124,+0.3831]). The exact sign test is not significant (p=0.210 and 1.0 respectively). **These exploratory results do not establish a robust improvement**, and this variant is not attributed to the original authors.
+
+**Reproduce / 重现实验：**
+```bash
+python scripts/study_v03.py --seeds 30 --seed-start 1000 --ants 10 --iterations 15 --bootstrap 4000
+```
+
+Raw data (`runs.csv`), summary (`summary.csv`), paired intervals (`paired_comparisons.csv`), configuration and map checksums (`manifest.json`) and plots are produced automatically and retained by CI. The reconstructed maps remain **unverified approximations** of the author's figures; these outcomes must not be presented as exact paper reproduction. Full interpretation: [v0.3.0 research note](docs/release-v0.3.0.md).

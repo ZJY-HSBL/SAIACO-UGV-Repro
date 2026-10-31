@@ -104,3 +104,20 @@ def test_six_special_paper_figures_have_feasible_graph_path(name):
     grid = Grid.from_text((MAPS / f'{name}.txt').read_text())
     assert grid.shape == (30, 30)
     assert shortest_grid_path(grid) is not None
+
+def test_sa_rng_isolation_produces_identical_search_without_feedback():
+    grid = Grid.from_text('S.......\n........\n...##...\n........\n.......G')
+    active = AntColony(grid, Config(seed=71, iterations=12, ants=12, sa_enabled=True), 'hybrid').run()
+    inactive = AntColony(grid, Config(seed=71, iterations=12, ants=12, sa_enabled=False), 'hybrid').run()
+    assert active.convergence == inactive.convergence
+    assert active.raw_path == inactive.raw_path
+    assert active.path == inactive.path
+
+
+def test_elite_pheromone_reinforcement_is_nonpaper_extension():
+    grid = Grid.from_text('S....\n.....\n.....\n.....\n....G')
+    assert Config().elite_deposit_weight == 0
+    with pytest.raises(ValueError):
+        Config(elite_deposit_weight=-0.1)
+    result = AntColony(grid, Config(seed=3, ants=5, iterations=5, elite_deposit_weight=5), 'hybrid').run()
+    assert valid_path(grid, result.path, allow_shortcuts=True)

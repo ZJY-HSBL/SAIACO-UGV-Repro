@@ -42,7 +42,7 @@ class Config:
     smoothing_enabled: bool = True  # Disable final smoothing for ablation
 
     def __post_init__(self) -> None:
-        if self.ants < 1 or self.iterations < 1 or self.c <= 0 or self.init_temp <= 0:
+        if self.ants < 1 or self.iterations < 1 or self.c <= 0 or self.init_temp <= 0 or self.elite_deposit_weight < 0:
             raise ValueError('Ants, iterations, c and initial temperature must be positive')
         if not 0 < self.cooling <= 1:
             raise ValueError('Cooling must be in (0,1]')
@@ -66,7 +66,9 @@ class AntColony:
         if mode not in {'classic', 'improved', 'hybrid'}:
             raise ValueError('mode must be classic, improved or hybrid')
         self.grid, self.config, self.mode = grid, config, mode
+        # Separate ant trajectory and Metropolis streams for paired experiments.
         self.rng = random.Random(config.seed)
+        self.sa_rng = random.Random(config.seed ^ 0x5A17DE5A)
         self.pheromone: dict[Edge, float] = {}
         self.seed_path = astar(grid, diagonal=False) if mode == 'hybrid' else None
         if self.seed_path is not None:
@@ -155,7 +157,7 @@ class AntColony:
                 cand_score = self.path_score(candidate)
                 if self.mode == 'hybrid':
                     delta = cand_score - sa_state_score
-                    if delta < 0 or (cfg.sa_enabled and self.rng.random() < exp(-max(0, delta) / max(temperature, 1e-12))):
+                    if delta < 0 or (cfg.sa_enabled and self.sa_rng.random() < exp(-max(0, delta) / max(temperature, 1e-12))):
                         sa_state, sa_state_score = candidate, cand_score
                     considered = sa_state
                 else:
@@ -181,6 +183,14 @@ class AntColony:
                     e = edge(a, b)
                     value = self.pheromone.get(e, (1-rho)) + inc
                     self.pheromone[e] = max(cfg.tau_min, min(cfg.tau_max, value)) if self.mode != 'classic' else value
+            # Explicit non-paper extension: the SA-selected state influences
+            # future trajectories only when elite_deposit_weight is nonzero.
+            if self.mode == 'hybrid' and cfg.elite_deposit_weight and sa_state:
+                elite_gain = cfg.elite_deposit_weight * cfg.q / max(evaluate(sa_state).length, 1e-10)
+                for a, b in zip(sa_state, sa_state[1:]):
+                    e = edge(a, b)
+                    value = self.pheromone.get(e, 1.0 - rho) + elite_gain
+                    self.pheromone[e] = max(cfg.tau_min, min(cfg.tau_max, value))
             temperature *= cfg.cooling
         raw = list(global_best) if global_best else None
         final = smooth_path(self.grid, raw) if raw and self.mode == 'hybrid' and cfg.smoothing_enabled else raw

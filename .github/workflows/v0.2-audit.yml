@@ -1,8 +1,6 @@
 name: v0.2 reproducibility audit and release
 
 on:
-  push:
-    branches: [main]
   workflow_dispatch:
 
 permissions:
