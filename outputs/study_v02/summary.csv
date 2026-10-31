@@ -1,0 +1,15 @@
+map,condition,replicates,feasible,mean_length,sd_length,mean_raw_search_gain
+double_hook_maze,full,3,3,50.8845,0.0,0.3905
+loop_maze,full,3,3,53.243,0.0,0.5858
+paper20,full,3,3,28.4281,0.2815,-0.7475
+paper20,no_direction,3,3,27.6337,0.2782,0.1953
+paper20,no_sa,3,3,28.4371,0.0276,0.0
+paper20,no_smoothing,3,3,35.7475,0.7106,-0.7475
+paper30,full,3,3,48.4147,0.0494,-0.0809
+paper30,no_direction,3,3,48.3862,0.0,0.3905
+paper30,no_sa,3,3,49.3748,1.7124,-0.6667
+paper30,no_smoothing,3,3,58.0809,0.1401,-0.0809
+staircase_maze,full,3,3,54.2746,0.0,0.1144
+traditional_maze,full,3,3,53.6412,1.097,1.1716
+u_maze,full,3,3,48.4161,0.0,0.424
+x_maze,full,3,3,47.561,0.0,0.781

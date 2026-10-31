@@ -1,0 +1,122 @@
+{
+  "paper20": {
+    "astar4": 35.0,
+    "dijkstra8": 28.556349,
+    "dijkstra8_shortcut_feasible": 26.576674,
+    "astar4_shortcut_feasible": 27.473074,
+    "start": [
+      3,
+      0
+    ],
+    "goal": [
+      19,
+      19
+    ],
+    "obstacles": 154
+  },
+  "paper30": {
+    "astar4": 58.0,
+    "dijkstra8": 48.041631,
+    "dijkstra8_shortcut_feasible": 45.498025,
+    "astar4_shortcut_feasible": 48.386156,
+    "start": [
+      29,
+      0
+    ],
+    "goal": [
+      0,
+      29
+    ],
+    "obstacles": 190
+  },
+  "u_maze": {
+    "astar4": 58.0,
+    "dijkstra8": 51.556349,
+    "dijkstra8_shortcut_feasible": 48.416144,
+    "astar4_shortcut_feasible": 48.416144,
+    "start": [
+      29,
+      0
+    ],
+    "goal": [
+      0,
+      29
+    ],
+    "obstacles": 88
+  },
+  "double_hook_maze": {
+    "astar4": 58.0,
+    "dijkstra8": 51.355339,
+    "dijkstra8_shortcut_feasible": 49.849952,
+    "astar4_shortcut_feasible": 50.884455,
+    "start": [
+      29,
+      0
+    ],
+    "goal": [
+      0,
+      29
+    ],
+    "obstacles": 101
+  },
+  "loop_maze": {
+    "astar4": 58.0,
+    "dijkstra8": 55.071068,
+    "dijkstra8_shortcut_feasible": 53.242965,
+    "astar4_shortcut_feasible": 53.242965,
+    "start": [
+      29,
+      0
+    ],
+    "goal": [
+      0,
+      29
+    ],
+    "obstacles": 189
+  },
+  "traditional_maze": {
+    "astar4": 58.0,
+    "dijkstra8": 54.485281,
+    "dijkstra8_shortcut_feasible": 52.374561,
+    "astar4_shortcut_feasible": 52.374561,
+    "start": [
+      29,
+      0
+    ],
+    "goal": [
+      0,
+      29
+    ],
+    "obstacles": 234
+  },
+  "staircase_maze": {
+    "astar4": 58.0,
+    "dijkstra8": 52.727922,
+    "dijkstra8_shortcut_feasible": 50.624022,
+    "astar4_shortcut_feasible": 51.979266,
+    "start": [
+      29,
+      0
+    ],
+    "goal": [
+      0,
+      29
+    ],
+    "obstacles": 174
+  },
+  "x_maze": {
+    "astar4": 58.0,
+    "dijkstra8": 50.970563,
+    "dijkstra8_shortcut_feasible": 47.561028,
+    "astar4_shortcut_feasible": 47.561028,
+    "start": [
+      29,
+      0
+    ],
+    "goal": [
+      0,
+      29
+    ],
+    "obstacles": 38
+  }
+}

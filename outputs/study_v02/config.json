@@ -1,0 +1,6 @@
+{
+  "seeds": 3,
+  "ants": 12,
+  "iterations": 20,
+  "out": "outputs/study_v02"
+}
