@@ -1,0 +1,48 @@
+{
+  "study": "v0.3.0 paired RNG audit",
+  "seed_start": 1000,
+  "seeds": 30,
+  "conditions": [
+    "full",
+    "no_sa",
+    "no_direction",
+    "no_smoothing",
+    "elite_sa",
+    "elite_no_sa"
+  ],
+  "ants": 10,
+  "iterations": 15,
+  "bootstrap": 4000,
+  "elite_weight": 3.0,
+  "references": {
+    "paper20": {
+      "grid_sha256": "36cc01126750d937935ca607da685e1936c3afe8f4d88b56da6542cedbef1980",
+      "discrete_8_neighbor_optimum": 28.556349,
+      "grid_obstacles": 154,
+      "start": [
+        3,
+        0
+      ],
+      "goal": [
+        19,
+        19
+      ],
+      "note": "Digitized approximation, not an original author map"
+    },
+    "paper30": {
+      "grid_sha256": "655f39b8e9ff027f619d430d94871272a4ed2f13a739603016bab36d51aa062f",
+      "discrete_8_neighbor_optimum": 48.041631,
+      "grid_obstacles": 190,
+      "start": [
+        29,
+        0
+      ],
+      "goal": [
+        0,
+        29
+      ],
+      "note": "Digitized approximation, not an original author map"
+    }
+  },
+  "note": "Exploratory. Non-paper elite variant. Original paper maps and parameters unknown."
+}

@@ -1,0 +1,11 @@
+map,candidate,reference,n,mean_gain,ci95_low,ci95_high,wins,losses,ties,sign_test_p
+paper20,full,no_sa,30,0.0,0.0,0.0,0,0,30,1.0
+paper20,full,no_direction,30,-0.748,-1.2699,-0.3239,5,19,6,0.0066108
+paper20,full,no_smoothing,30,6.949,6.4786,7.3944,30,0,0,0.0
+paper20,elite_sa,elite_no_sa,30,0.4023,0.061,0.7507,11,5,14,0.2101135
+paper20,elite_sa,full,30,0.5318,-0.0753,1.1363,18,9,3,0.1220781
+paper30,full,no_sa,30,0.0,0.0,0.0,0,0,30,1.0
+paper30,full,no_direction,30,-0.2657,-0.6804,0.083,4,11,15,0.1184692
+paper30,full,no_smoothing,30,9.1144,8.8675,9.3465,30,0,0,0.0
+paper30,elite_sa,elite_no_sa,30,0.1383,-0.0124,0.3831,2,2,26,1.0
+paper30,elite_sa,full,30,0.1436,-0.2713,0.6039,11,11,8,1.0
