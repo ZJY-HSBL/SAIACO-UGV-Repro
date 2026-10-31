@@ -1,8 +1,6 @@
 name: Generate benchmark artifacts and publish initial release
 
 on:
-  push:
-    branches: [main]
   workflow_dispatch:
 
 permissions:

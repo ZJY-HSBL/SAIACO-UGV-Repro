@@ -38,6 +38,8 @@ class Config:
     optional_goal_bias: float = 0.0
     step_limit: int = 0
     recover_deadends: bool = True
+    sa_enabled: bool = True  # Greedy-acceptance ablation switch
+    smoothing_enabled: bool = True  # Disable final smoothing for ablation
 
     def __post_init__(self) -> None:
         if self.ants < 1 or self.iterations < 1 or self.c <= 0 or self.init_temp <= 0:
@@ -153,7 +155,7 @@ class AntColony:
                 cand_score = self.path_score(candidate)
                 if self.mode == 'hybrid':
                     delta = cand_score - sa_state_score
-                    if delta < 0 or self.rng.random() < exp(-max(0, delta) / max(temperature, 1e-12)):
+                    if delta < 0 or (cfg.sa_enabled and self.rng.random() < exp(-max(0, delta) / max(temperature, 1e-12))):
                         sa_state, sa_state_score = candidate, cand_score
                     considered = sa_state
                 else:
@@ -181,5 +183,5 @@ class AntColony:
                     self.pheromone[e] = max(cfg.tau_min, min(cfg.tau_max, value)) if self.mode != 'classic' else value
             temperature *= cfg.cooling
         raw = list(global_best) if global_best else None
-        final = smooth_path(self.grid, raw) if raw and self.mode == 'hybrid' else raw
+        final = smooth_path(self.grid, raw) if raw and self.mode == 'hybrid' and cfg.smoothing_enabled else raw
         return Result(self.mode, final, raw, convergence, best_iter, successes, self.seed_path)

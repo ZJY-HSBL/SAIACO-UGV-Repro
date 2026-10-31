@@ -21,7 +21,12 @@ def evaluate(path: list[Point]) -> Metrics:
         return Metrics(0., 0, 0.)
     segments = [(b[1] - a[1], a[0] - b[0]) for a, b in zip(path, path[1:])]
     distance = sum(hypot(dx, dy) for dx, dy in segments)
-    turns = sum(segments[i] != segments[i-1] for i in range(1, len(segments)))
+    # Heading change is invariant to segment length (post-smoothing).
+    turns = sum(
+        (segments[i-1][0]*segments[i][1] - segments[i-1][1]*segments[i][0] != 0)
+        or (segments[i-1][0]*segments[i][0] + segments[i-1][1]*segments[i][1] <= 0)
+        for i in range(1, len(segments))
+    )
     curvatures: list[float] = []
     for i in range(1, len(path)-1):
         ax, ay = segments[i-1]

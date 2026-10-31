@@ -7,6 +7,7 @@ from .grid import Grid, valid_path, astar
 from .algorithms import AntColony, Config
 from .metrics import evaluate
 from .plotting import plot_routes, plot_convergence
+from .oracles import shortest_grid_path, shortest_grid_path_smoothed
 
 MAPS = Path(__file__).resolve().with_name('maps')
 
@@ -20,7 +21,7 @@ def experiment(mapname: str, config: Config, output: Path) -> dict:
     rows = []
     serial = {}
     for mode, result in results.items():
-        if result.path is not None and not valid_path(grid, result.path, allow_shortcuts=(mode=='hybrid')):
+        if result.path is not None and not valid_path(grid, result.path, allow_shortcuts=(mode=='hybrid' and config.smoothing_enabled)):
             raise AssertionError(f'INVALID PATH: {mapname}, {mode}')
         metrics = evaluate(result.path).as_dict() if result.path else None
         raw = evaluate(result.raw_path).as_dict() if result.raw_path else None
@@ -33,7 +34,11 @@ def experiment(mapname: str, config: Config, output: Path) -> dict:
                         'raw_path':result.raw_path, 'first_best_iteration':result.first_best_iteration,
                         'successful_walks':result.successes, 'convergence':result.convergence,
                         'seed_path': result.seed_path}
+    oracle = shortest_grid_path(grid)
+    oracle_smooth = shortest_grid_path_smoothed(grid)
     report = {'map':mapname, 'shape':grid.shape,'config':asdict(config), 'algorithms': serial,
+              'references': {'dijkstra8': evaluate(oracle).as_dict() if oracle else None,
+                             'dijkstra8_smoothed_feasible': evaluate(oracle_smooth).as_dict() if oracle_smooth else None},
               'note': 'Figure-digitized map; unspecified paper parameters are assumed, not author verified.'}
     (output / 'results.json').write_text(json.dumps(report, indent=2, ensure_ascii=False), encoding='utf-8')
     with (output / 'metrics.csv').open('w', newline='', encoding='utf-8') as fp:
@@ -47,16 +52,19 @@ def experiment(mapname: str, config: Config, output: Path) -> dict:
 
 def main() -> None:
     p = argparse.ArgumentParser(description='SA-IACO reproduction: figure-digitized maps and three variants')
-    p.add_argument('--map', choices=['paper20','paper30','u_maze','x_maze','all'], default='paper20')
+    p.add_argument('--map', choices=['paper20','paper30','u_maze','double_hook_maze','loop_maze','traditional_maze','staircase_maze','x_maze','all'], default='paper20')
     p.add_argument('--iterations', type=int, default=60)
     p.add_argument('--ants', type=int, default=30)
     p.add_argument('--seed', type=int, default=2026)
     p.add_argument('--goal-bias', type=float, default=0.0, help='Non-paper extension, default disabled')
+    p.add_argument('--no-sa', action='store_true', help='Ablation: greedy acceptance, no Metropolis')
+    p.add_argument('--no-smoothing', action='store_true', help='Ablation: no final waypoint optimization')
     p.add_argument('--out', type=Path, default=Path('outputs'))
     args = p.parse_args()
     cfg = Config(ants=args.ants, iterations=args.iterations, seed=args.seed,
-                 optional_goal_bias=args.goal_bias)
-    maps = ['paper20','paper30','u_maze','x_maze'] if args.map == 'all' else [args.map]
+                 optional_goal_bias=args.goal_bias, sa_enabled=not args.no_sa,
+                 smoothing_enabled=not args.no_smoothing)
+    maps = ['paper20','paper30','u_maze','double_hook_maze','loop_maze','traditional_maze','staircase_maze','x_maze'] if args.map == 'all' else [args.map]
     for name in maps:
         result = experiment(name, cfg, args.out / name)
         print(name, {k:v['metrics'] for k,v in result['algorithms'].items()})

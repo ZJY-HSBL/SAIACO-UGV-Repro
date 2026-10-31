@@ -78,3 +78,29 @@ def test_hybrid_improves_four_neighbor_seed_on_open_grid():
     assert result.first_best_iteration is not None
     assert evaluate(result.raw_path).length < evaluate(result.seed_path).length
     assert valid_path(g,result.path,allow_shortcuts=True)
+
+def test_turn_count_invariant_to_segment_length():
+    assert evaluate([(0, 0), (0, 2), (0, 5)]).turns == 0
+    assert evaluate([(0, 0), (0, 2), (0, 5), (2, 5)]).turns == 1
+    assert evaluate([(0, 0), (0, 2), (0, 0)]).turns == 1
+
+
+def test_dijkstra_oracle_exact_on_open_grid():
+    from saiaco_ugv.oracles import shortest_grid_path, shortest_grid_path_smoothed
+    from math import sqrt
+    grid = Grid.from_text('S...\n....\n....\n...G')
+    route = shortest_grid_path(grid)
+    assert valid_path(grid, route)
+    assert isclose(evaluate(route).length, 3 * sqrt(2))
+    shortcut = shortest_grid_path_smoothed(grid)
+    assert valid_path(grid, shortcut, allow_shortcuts=True)
+    assert evaluate(shortcut).length <= evaluate(route).length + 1e-9
+
+
+@pytest.mark.parametrize('name', ('u_maze','double_hook_maze','loop_maze',
+                                   'traditional_maze','staircase_maze','x_maze'))
+def test_six_special_paper_figures_have_feasible_graph_path(name):
+    from saiaco_ugv.oracles import shortest_grid_path
+    grid = Grid.from_text((MAPS / f'{name}.txt').read_text())
+    assert grid.shape == (30, 30)
+    assert shortest_grid_path(grid) is not None

@@ -6,3 +6,5 @@ from .smoothing import smooth_path
 
 __all__ = ['AntColony', 'Config', 'Result', 'Grid', 'astar', 'valid_path',
            'evaluate', 'score', 'smooth_path']
+
+from .oracles import shortest_grid_path, shortest_grid_path_smoothed

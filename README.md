@@ -1,5 +1,35 @@
 # SAIACO-UGV-Repro
 
+## v0.2.0 — Reproduction audit and paired ablations / 复现审计与配对消融
+
+**Research status / 研究状态:** The algorithm is implemented, but **strict numerical reproduction of the paper has not been achieved**. The figures do not disclose exact obstacle matrices, original endpoints or complete hyperparameters; claims are confined to independently digitized experimental maps. Six additional paper-figure maze *occupancy patterns* have been digitized, but their start and goal are **assumed experimental probes**.
+
+**Reproducibility fixes:** A turning event is now defined by a change of heading, not by raw inequality of segment vectors. This prevents a collinear 2-cell segment followed by a 3-cell segment being counted as a turn. An exact Dijkstra reference for the corner-safe 8-connected graph is provided; its subsequently smoothed path is a **feasible comparison, not a certified continuous-path optimum**.
+
+**Paired 3-seed exploratory study** (12 ants, 20 iterations, same seeds 0/1/2 per condition; lower length is better):
+
+| 20×20 / 30×30 | Full SA-IACO | No SA | No direction | No smoothing |
+|---|---:|---:|---:|---:|
+| 20×20 mean length | 28.43 | 28.44 | 27.63 | 35.75 |
+| 30×30 mean length | 48.41 | 49.37 | 48.39 | 58.08 |
+
+![Ablation comparisons](outputs/study_v02/ablation.png)
+
+All 6 special maps produced collision-free feasible paths in 3/3 seeds each, on the assumed start/goal probes. These numbers are **not** the original paper's results and the sample size is too small for claims of statistical significance. In both main maps, disabling smoothing caused a large deterioration; current tests did not establish positive added value from directional guidance or SA. The hybrid algorithm's raw search often failed to improve on its A* seed, so more optimization work is needed.
+
+本轮已完成 18 项测试、Dijkstra 图最短路径参照、6 种特殊地图近似提取及 3 随机种子消融实验。**目前的主要性能收益来自路径平滑，尚不能证明模拟退火或方向引导带来稳定增益；不宣称完全数值复现。**
+
+Run / 复现实验：
+
+```bash
+python scripts/study_v02.py --seeds 3 --ants 12 --iterations 20
+```
+
+Results: [summary.csv](outputs/study_v02/summary.csv), [per-seed runs.csv](outputs/study_v02/runs.csv), [deterministic references](outputs/study_v02/references.json), [map assumptions](docs/map_provenance.md). For a stronger statistical conclusion, increase independent seeds to at least 30 and test on held-out maps without tuning to these results.
+
+---
+
+
 **Simulated Annealing–Improved Ant Colony Optimization for Unmanned Ground Vehicle Path Planning**  
 **基于模拟退火-改进蚁群算法的无人车路径规划——独立复现**
 

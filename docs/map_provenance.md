@@ -13,3 +13,16 @@ The authors did **not** publish raw obstacle matrices. `paper20.txt` and `paper3
 Eq. 18 contains an incompletely defined length reference; we use initial feasible route length. We also use backtracking for dead ends and add a conservative supercover collision test in the smoother. Those safety decisions can lead to longer paths than the article.
 
 Original performance tables are for reference only. This repository must not claim its results exactly match the original until parameters/maps and independent statistics are confirmed.
+
+
+## v0.2 addendum — special-figure reconstruction
+
+Figures 11–14 from original PDF page 8 and Figures 15–16 from page 9 were rendered at 2.5× and approximately segmented by central-cell dark-pixel thresholding. Reconstruction crop boxes and thresholds are preserved in `scripts/extract_special_maps.py` (needs PyMuPDF, NumPy, Pillow if rerun). The six reconstructed environments resemble the paper diagrams but are **not verified exact source grids**; plotted solution polylines can obscure some obstacle cells and produce extraction artifacts.
+
+Each special scenario in v0.2 fixes test start=(29,0) and goal=(0,29) in Python (row,column). These are **chosen test probes**; source figures do not unambiguously identify the authors' start/goal. The full method is evaluated for reachability and obstacle collision safety, not claimed to match their route length or waypoints.
+
+## v0.2 metric correction and deterministic reference
+
+Previous implementation compared successive raw segment vectors for equality. Such vectors have unequal magnitudes after smoothing, so straight collinear segments could be falsely counted as turns. We now use cross product = 0 and positive dot product to detect a consistent heading. The Dijkstra 8-neighbor oracle is exact within the same grid graph and diagonal corner-cut constraints as the code, but it does not certify globally shortest paths once arbitrary straight-line shortcuts are allowed.
+
+A three-seed ablation study is exploratory, not a statistical demonstration. No benchmark parameters are fit to the published table. SA and directional guidance benefits remain uncertain.
