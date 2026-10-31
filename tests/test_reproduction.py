@@ -121,3 +121,15 @@ def test_elite_pheromone_reinforcement_is_nonpaper_extension():
         Config(elite_deposit_weight=-0.1)
     result = AntColony(grid, Config(seed=3, ants=5, iterations=5, elite_deposit_weight=5), 'hybrid').run()
     assert valid_path(grid, result.path, allow_shortcuts=True)
+
+def test_sa_instrumentation_and_greedy_negative_control():
+    grid = Grid.from_text('S.....\n......\n......\n......\n.....G')
+    config = Config(ants=6, iterations=10, seed=17, elite_deposit_weight=3)
+    active = AntColony(grid, config, 'hybrid').run()
+    greedy = AntColony(grid, Config(ants=6, iterations=10, seed=17,
+                                    elite_deposit_weight=3, sa_enabled=False), 'hybrid').run()
+    assert active.elite_deposit_rounds == greedy.elite_deposit_rounds == 10
+    assert active.sa_uphill_accepted >= 0
+    assert greedy.sa_uphill_accepted == 0
+    assert active.sa_nonworse_accepted >= 0
+    assert valid_path(grid, active.path, allow_shortcuts=True)

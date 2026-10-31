@@ -1,5 +1,15 @@
 # Changelog
 
+## [v0.4.0] — 2026-10-31
+
+- Added SA-state diagnostics: accepted worse moves, nonworse acceptances, and elite reinforcement rounds.
+- Added a new held-out study: 8 approximate paper-figure maps × 20 unseen seeds × 3 configurations = **480 runs**.
+- All paths checked for collision safety, raw-path discrete Dijkstra bound, and non-increasing smoothing length.
+- Paired bootstrap intervals clustered by seed; two predeclared hypotheses with Holm-adjusted exact sign tests.
+- **Negative main result:** elite SA vs elite greedy +0.06484% (CI [−0.15149%, +0.29100%], adjusted p=0.53369); elite SA vs baseline +0.47866% (CI [−0.00254%, +0.95946%], adjusted p=0.53369).
+- Published per-run evidence, 3 plots and map/seed provenance manifest.
+- Original paper's numerical tables are **not yet strictly reproduced**.
+
 ## [v0.3.0] — 2026-10-31
 
 - Separated the ant-choice and Metropolis RNG streams to remove paired-ablation confounding; 20 tests.

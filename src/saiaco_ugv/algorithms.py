@@ -60,6 +60,9 @@ class Result:
     first_best_iteration: int | None
     successes: int
     seed_path: list[Point] | None = None
+    sa_uphill_accepted: int = 0
+    sa_nonworse_accepted: int = 0
+    elite_deposit_rounds: int = 0
 
 
 class AntColony:
@@ -144,6 +147,9 @@ class AntColony:
         convergence: list[float | None] = []
         successes = 0
         temperature = cfg.init_temp
+        sa_uphill_accepted = 0
+        sa_nonworse_accepted = 0
+        elite_deposit_rounds = 0
         for it in range(1, cfg.iterations + 1):
             alpha, beta = self.alpha_beta(it)
             solutions = []
@@ -158,7 +164,14 @@ class AntColony:
                 cand_score = self.path_score(candidate)
                 if self.mode == 'hybrid':
                     delta = cand_score - sa_state_score
-                    if delta < 0 or (cfg.sa_enabled and self.sa_rng.random() < exp(-max(0, delta) / max(temperature, 1e-12))):
+                    # Metropolis RNG is isolated from ant routing.
+                    # Only strictly uphill acceptances are counted as worse.
+                    accepted = delta <= 0 or (cfg.sa_enabled and self.sa_rng.random() < exp(-delta / max(temperature, 1e-12)))
+                    if accepted:
+                        if delta > 1e-10:
+                            sa_uphill_accepted += 1
+                        else:
+                            sa_nonworse_accepted += 1
                         sa_state, sa_state_score = candidate, cand_score
                     considered = sa_state
                 else:
@@ -187,6 +200,7 @@ class AntColony:
             # Explicit non-paper extension: the SA-selected state influences
             # future trajectories only when elite_deposit_weight is nonzero.
             if self.mode == 'hybrid' and cfg.elite_deposit_weight and sa_state:
+                elite_deposit_rounds += 1
                 elite_gain = cfg.elite_deposit_weight * cfg.q / max(evaluate(sa_state).length, 1e-10)
                 for a, b in zip(sa_state, sa_state[1:]):
                     e = edge(a, b)
@@ -195,4 +209,5 @@ class AntColony:
             temperature *= cfg.cooling
         raw = list(global_best) if global_best else None
         final = smooth_path(self.grid, raw) if raw and self.mode == 'hybrid' and cfg.smoothing_enabled else raw
-        return Result(self.mode, final, raw, convergence, best_iter, successes, self.seed_path)
+        return Result(self.mode, final, raw, convergence, best_iter, successes, self.seed_path,
+                      sa_uphill_accepted, sa_nonworse_accepted, elite_deposit_rounds)

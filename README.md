@@ -192,3 +192,35 @@ python scripts/study_v03.py --seeds 30 --seed-start 1000 --ants 10 --iterations 
 ```
 
 Raw data (`runs.csv`), summary (`summary.csv`), paired intervals (`paired_comparisons.csv`), configuration and map checksums (`manifest.json`) and plots are produced automatically and retained by CI. The reconstructed maps remain **unverified approximations** of the author's figures; these outcomes must not be presented as exact paper reproduction. Full interpretation: [v0.3.0 research note](docs/release-v0.3.0.md).
+
+
+## 8. v0.4.0 held-out validation / 八图独立种子验证
+
+**Independent confirmation, NOT another hyperparameter search.** 20 unseen paired seeds (2000–2019) × 8 approximately reconstructed paper-figure maps × 3 predeclared configurations = **480 genuine trials**. Parameters fixed at **10 ants, 15 iterations, elite reinforcement 3.0** (the reinforcement mechanism is an explicit *non-paper* extension). In six special mazes, start/goal positions remain assumed experimental probes.
+
+**Method:** Each of the 20 random seeds first yields an equal-weight average of the paired *relative* effects over eight maps. Thus the independent statistical unit is the **seed**, not 160 correlated map/seed pairs. We report paired bootstrap 95% intervals and Holm-adjusted sign tests for **two predeclared primary hypotheses**. Per-map comparisons are exploratory and not multiplicity-adjusted.
+
+| Primary comparison (lower path length is better) | Mean relative reduction | 95% paired bootstrap CI | Holm-adjusted p |
+| --- | ---: | ---: | ---: |
+| Elite SA vs elite greedy (effect of Metropolis acceptance) | **+0.06484%** | [−0.15149%, +0.29100%] | 0.53369 |
+| Elite SA vs previous paper-inspired baseline (extension as a package) | **+0.47866%** | [−0.00254%, +0.95946%] | 0.53369 |
+
+**Result:** Neither primary comparison passes a 0.05 family-wise threshold. SA does accept some higher-score candidates (diagnostics recorded), but that does **not** imply better final routes. Some special-map paths are identical for all seeds across all conditions, underscoring limited sensitivity of the final smoothing stage.
+
+![Held-out primary comparisons](outputs/study_v04/heldout_primary.png)
+
+![Exploratory per-map paired comparisons](outputs/study_v04/heldout_map_effects.png)
+
+![Raw search vs smoothing](outputs/study_v04/search_vs_smoothing.png)
+
+The original source paper reports a 30×30 path length of 44.70; this independent implementation still differs materially from that result. **Do not interpret extension results as reproduction of the published source paper.**
+
+Evidence: [raw 480-run dataset](outputs/study_v04/runs.csv), [predeclared primary comparisons](outputs/study_v04/primary_comparisons.csv), [exploratory map comparisons](outputs/study_v04/exploratory_map_comparisons.csv), [per-map summary](outputs/study_v04/summary.csv), and [seed/map SHA-256 provenance](outputs/study_v04/manifest.json).
+
+Re-run identically:
+
+```bash
+python scripts/study_v04.py --seed-start 2000 --seeds 20 --ants 10 --iterations 15 --bootstrap 4000
+```
+
+Next research priority: calibrate missing source maps and hyperparameters, diagnose pheromone entropy/route-diversity and distinguish ACO route selection from final smoothing. Preserve negative results; do not retune on this held-out confirmation cohort.
